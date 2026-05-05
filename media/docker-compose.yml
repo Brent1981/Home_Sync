@@ -1,18 +1,14 @@
-version: '3.8'
-
 services:
   gluetun:
     image: qmcgaw/gluetun
     container_name: gluetun
+    network_mode: "host"
     cap_add:
       - NET_ADMIN
     devices:
       - /dev/net/tun:/dev/net/tun
     env_file:
       - .env
-    networks:
-      media_network:
-        ipv4_address: 10.0.110.10
     restart: unless-stopped
     environment:
       - PUID=1000
@@ -37,45 +33,45 @@ services:
   sonarr:
     image: lscr.io/linuxserver/sonarr:latest
     container_name: sonarr
-    networks:
-      media_network:
-        ipv4_address: 10.0.110.11
+    ports:
+      - 8989:8989
     environment:
       - PUID=1000
       - PGID=1000
       - TZ=America/New_York
+      - API_KEY=446e6c1985fc47519a27a71c0c25fbf2
     volumes:
       - /mnt/Configs_Backups/Services/sonarr:/config
-      - /mnt/Datatank2/Media/downloads:/downloads
-      - /mnt/Datatank2/Media/shows:/tv
+      - /mnt/media_datatank2/downloads:/downloads
+      - /mnt/media_datatank2/shows:/tv
     restart: unless-stopped
 
   radarr:
     image: lscr.io/linuxserver/radarr:latest
     container_name: radarr
-    networks:
-      media_network:
-        ipv4_address: 10.0.110.12
+    ports:
+      - 7878:7878
     environment:
       - PUID=1000
       - PGID=1000
       - TZ=America/New_York
+      - API_KEY=61f61cd0ae104764adbff4553fb48588
     volumes:
       - /mnt/Configs_Backups/Services/radarr:/config
-      - /mnt/Datatank2/Media/downloads:/downloads
-      - /mnt/Datatank2/Media/movies:/movies
+      - /mnt/media_datatank2/downloads:/downloads
+      - /mnt/media_datatank2/movies:/movies
     restart: unless-stopped
 
   prowlarr:
     image: lscr.io/linuxserver/prowlarr:latest
     container_name: prowlarr
-    networks:
-      media_network:
-        ipv4_address: 10.0.110.13
+    ports:
+      - 9696:9696
     environment:
       - PUID=1000
       - PGID=1000
       - TZ=America/New_York
+      - API_KEY=0093aceb5f0f4882abde3fc75f8d7057
     volumes:
       - /mnt/Configs_Backups/Services/prowlarr:/config
     restart: unless-stopped
@@ -83,25 +79,23 @@ services:
   jellyfin:
     image: lscr.io/linuxserver/jellyfin:latest
     container_name: jellyfin
-    networks:
-      media_network:
-        ipv4_address: 10.0.110.14
+    ports:
+      - 8096:8096
     environment:
       - PUID=1000
       - PGID=1000
       - TZ=America/New_York
     volumes:
       - /mnt/Configs_Backups/Services/jellyfin:/config
-      - /mnt/Datatank2/Media/shows:/data/tvshows
-      - /mnt/Datatank2/Media/movies:/data/movies
+      - /mnt/media_datatank2/shows:/data/tvshows
+      - /mnt/media_datatank2/movies:/data/movies
     restart: unless-stopped
 
   jellyseerr:
     image: fallenbagel/jellyseerr:latest
     container_name: jellyseerr
-    networks:
-      media_network:
-        ipv4_address: 10.0.110.15
+    ports:
+      - 5055:5055
     environment:
       - PUID=1000
       - PGID=1000
@@ -113,20 +107,10 @@ services:
   flaresolverr:
     image: ghcr.io/flaresolverr/flaresolverr:latest
     container_name: flaresolverr
-    networks:
-      media_network:
-        ipv4_address: 10.0.110.16
+    ports:
+      - 8191:8191
     environment:
       - TZ=America/New_York
+      - LOG_LEVEL=info
+      - BROWSER_TIMEOUT=120000
     restart: unless-stopped
-
-networks:
-  media_network:
-    driver: macvlan
-    driver_opts:
-      parent: enp1s0
-    ipam:
-      config:
-        - subnet: 10.0.110.0/24
-          gateway: 10.0.110.1
-          ip_range: 10.0.110.10/28

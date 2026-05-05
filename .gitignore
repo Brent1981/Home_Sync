@@ -6,3 +6,6 @@
 # Exclude large logs or temp data
 *.log
 tmp/
+
+# Exclude sensitive credentials
+credentials.md
