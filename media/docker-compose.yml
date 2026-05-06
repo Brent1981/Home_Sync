@@ -2,13 +2,14 @@ services:
   gluetun:
     image: qmcgaw/gluetun
     container_name: gluetun
-    network_mode: "host"
     cap_add:
       - NET_ADMIN
     devices:
       - /dev/net/tun:/dev/net/tun
     env_file:
       - .env
+    ports:
+      - 8080:8080 # qBittorrent WebUI
     restart: unless-stopped
     environment:
       - PUID=1000
@@ -25,7 +26,7 @@ services:
       - TZ=America/New_York
     volumes:
       - /mnt/Configs_Backups/Services/qbittorrent:/config
-      - /mnt/Datatank2/Media/downloads:/downloads
+      - /mnt/media_datatank2/downloads:/downloads
     depends_on:
       - gluetun
     restart: unless-stopped
