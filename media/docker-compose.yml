@@ -40,7 +40,7 @@ services:
       - PUID=1000
       - PGID=1000
       - TZ=America/New_York
-      - API_KEY=446e6c1985fc47519a27a71c0c25fbf2
+      - API_KEY=e610cae45ff044c3ac5af4d0924e109e
     volumes:
       - /mnt/Configs_Backups/Services/sonarr:/config
       - /mnt/media_datatank2/downloads:/downloads
@@ -56,7 +56,7 @@ services:
       - PUID=1000
       - PGID=1000
       - TZ=America/New_York
-      - API_KEY=61f61cd0ae104764adbff4553fb48588
+      - API_KEY=2c0d5a014fa14e8bbde8dac07e1f725f
     volumes:
       - /mnt/Configs_Backups/Services/radarr:/config
       - /mnt/media_datatank2/downloads:/downloads
