@@ -72,7 +72,7 @@ services:
       - PUID=1000
       - PGID=1000
       - TZ=America/New_York
-      - API_KEY=0093aceb5f0f4882abde3fc75f8d7057
+      - API_KEY=5988503f5cb6412992e9b7ec907db3dd
     volumes:
       - /mnt/Configs_Backups/Services/prowlarr:/config
     restart: unless-stopped
